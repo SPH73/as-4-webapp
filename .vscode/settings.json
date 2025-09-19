@@ -3,5 +3,16 @@
     "activityBar.background": "#1C3310",
     "titleBar.activeBackground": "#274816",
     "titleBar.activeForeground": "#F6FBF4"
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[Vue]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
   }
 }
