@@ -1,0 +1,27 @@
+# --------------------------------
+# Security & Canonicalization
+# --------------------------------
+
+# Force HTTPS
+http://*    https://:splat 301!
+
+# Force non-www (canonical domain)
+# https://www.absolutesport.org/*  https://absolutesport.org/:splat 301!
+# Or invert if you want www as canonical:
+https://absolutesport.org/*   https://www.absolutesport.org/:splat 301!
+
+# --------------------------------
+# Spam & Abuse Mitigation
+# --------------------------------
+# Redirect excessive POSTs to slowdown page
+/contact    /too-many-requests.html   200
+
+# --------------------------------
+# Custom Error Pages
+# --------------------------------
+
+# 404 Page
+/*    /404.html   404
+
+# Optional 500 Page
+#/500.html   /500.html   500
