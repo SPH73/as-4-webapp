@@ -1,6 +1,6 @@
-# Nuxt Minimal Starter
+# AbsoluteSport booking webapp
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/cf968c94-4c1b-45ac-b2ba-afd4bce9296f/deploy-status)](https://app.netlify.com/projects/absolutesport/deploys)
 
 ## Setup
 
