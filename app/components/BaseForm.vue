@@ -17,7 +17,7 @@ type FormFields = {
   childName: string;
 };
 
-// Production defaults (all empty)
+// Production defaults (empty fields)
 const formDefaults: FormFields = {
   name: "",
   email: "",
@@ -40,7 +40,7 @@ const form = ref<FormFields>({ ...formDefaults });
 const errors = ref<Record<string, string>>({});
 const submitted = ref(false);
 const failed = ref(false);
-const touched = ref(false);
+const showErrors = ref(false);
 
 const validate = (): boolean => {
   errors.value = {};
@@ -73,17 +73,15 @@ const validate = (): boolean => {
   return Object.keys(errors.value).length === 0;
 };
 
-// ✅ Reactive: now returns validate() result directly
-const isValid = computed(() => {
-  if (!touched.value) return false;
-  return validate();
-});
-
 const handleSubmit = async () => {
-  touched.value = true;
-  if (!validate()) return;
+  // show errors if invalid
+  if (!validate()) {
+    showErrors.value = true;
+    return;
+  }
 
   try {
+    console.log("Submitting form:", form.value);
     const formEl = document.querySelector<HTMLFormElement>(
       'form[name="contact"]'
     );
@@ -95,9 +93,9 @@ const handleSubmit = async () => {
     if (res.ok) {
       submitted.value = true;
       failed.value = false;
-      form.value = { ...formDefaults }; // reset form
-      errors.value = {}; // clear errors
-      // keep touched = true so errors remain hidden until next submit
+      form.value = { ...formDefaults };
+      errors.value = {};
+      showErrors.value = false; // reset errors visibility after success
     } else {
       throw new Error("Netlify submission failed");
     }
@@ -107,18 +105,6 @@ const handleSubmit = async () => {
     failed.value = true;
   }
 };
-watch(
-  form,
-  () => {
-    console.log("Form changed:", form.value);
-    console.log("Validation result:", validate());
-  },
-  { deep: true }
-);
-
-watch(isValid, (val) => {
-  console.log("isValid:", val);
-});
 </script>
 
 <template>
@@ -152,7 +138,7 @@ watch(isValid, (val) => {
           class="w-full p-2 rounded"
           autocomplete="name"
         />
-        <p v-if="touched && errors.name" class="text-red-600 text-sm">
+        <p v-if="showErrors && errors.name" class="text-red-600 text-sm">
           {{ errors.name }}
         </p>
       </div>
@@ -171,7 +157,7 @@ watch(isValid, (val) => {
           placeholder="Your best email"
           autocomplete="email"
         />
-        <p v-if="touched && errors.email" class="text-red-600 text-sm">
+        <p v-if="showErrors && errors.email" class="text-red-600 text-sm">
           {{ errors.email }}
         </p>
       </div>
@@ -190,7 +176,7 @@ watch(isValid, (val) => {
           placeholder="Your best contact number"
           autocomplete="tel"
         />
-        <p v-if="touched && errors.phone" class="text-red-600 text-sm">
+        <p v-if="showErrors && errors.phone" class="text-red-600 text-sm">
           {{ errors.phone }}
         </p>
       </div>
@@ -212,7 +198,7 @@ watch(isValid, (val) => {
           <option value="Camps">Camps</option>
           <option value="Other">Other</option>
         </select>
-        <p v-if="touched && errors.enquiryType" class="text-red-600 text-sm">
+        <p v-if="showErrors && errors.enquiryType" class="text-red-600 text-sm">
           {{ errors.enquiryType }}
         </p>
       </div>
@@ -230,7 +216,7 @@ watch(isValid, (val) => {
             class="w-full p-2 rounded"
           />
           <p
-            v-if="touched && errors.venuePostcode"
+            v-if="showErrors && errors.venuePostcode"
             class="text-red-600 text-sm"
           >
             {{ errors.venuePostcode }}
@@ -249,7 +235,7 @@ watch(isValid, (val) => {
             class="w-full p-2 rounded"
           />
           <p
-            v-if="touched && errors.datePreferred"
+            v-if="showErrors && errors.datePreferred"
             class="text-red-600 text-sm"
           >
             {{ errors.datePreferred }}
@@ -267,7 +253,10 @@ watch(isValid, (val) => {
             type="date"
             class="w-full p-2 rounded"
           />
-          <p v-if="touched && errors.birthdayDate" class="text-red-600 text-sm">
+          <p
+            v-if="showErrors && errors.birthdayDate"
+            class="text-red-600 text-sm"
+          >
             {{ errors.birthdayDate }}
           </p>
         </div>
@@ -283,7 +272,7 @@ watch(isValid, (val) => {
             type="number"
             class="w-full p-2 rounded"
           />
-          <p v-if="touched && errors.age" class="text-red-600 text-sm">
+          <p v-if="showErrors && errors.age" class="text-red-600 text-sm">
             {{ errors.age }}
           </p>
         </div>
@@ -313,7 +302,7 @@ watch(isValid, (val) => {
             name="school"
             class="w-full p-2 rounded"
           />
-          <p v-if="touched && errors.school" class="text-red-600 text-sm">
+          <p v-if="showErrors && errors.school" class="text-red-600 text-sm">
             {{ errors.school }}
           </p>
         </div>
@@ -328,7 +317,7 @@ watch(isValid, (val) => {
             name="yearGroup"
             class="w-full p-2 rounded"
           />
-          <p v-if="touched && errors.yearGroup" class="text-red-600 text-sm">
+          <p v-if="showErrors && errors.yearGroup" class="text-red-600 text-sm">
             {{ errors.yearGroup }}
           </p>
         </div>
@@ -343,7 +332,7 @@ watch(isValid, (val) => {
             name="childName"
             class="w-full p-2 rounded"
           />
-          <p v-if="touched && errors.childName" class="text-red-600 text-sm">
+          <p v-if="showErrors && errors.childName" class="text-red-600 text-sm">
             {{ errors.childName }}
           </p>
         </div>
@@ -362,7 +351,7 @@ watch(isValid, (val) => {
           class="w-full p-2 rounded"
           placeholder="How can we help?"
         ></textarea>
-        <p v-if="touched && errors.message" class="text-red-600 text-sm">
+        <p v-if="showErrors && errors.message" class="text-red-600 text-sm">
           {{ errors.message }}
         </p>
       </div>
@@ -384,17 +373,13 @@ watch(isValid, (val) => {
         class="h-6 w-6 rounded border-gray-400 accent-accent focus:ring-2 focus:ring-accent cursor-pointer"
       />
     </div>
-    <p v-if="touched && errors.agree" class="text-red-600 text-sm">
+    <p v-if="showErrors && errors.agree" class="text-red-600 text-sm">
       {{ errors.agree }}
     </p>
 
     <!-- Submit -->
     <div class="md:flex md:justify-end">
-      <button
-        type="submit"
-        class="btn-accent my-4 w-full md:w-fit"
-        :disabled="!isValid"
-      >
+      <button type="submit" class="btn-accent my-4 w-full md:w-fit">
         {{ submitted ? "Submitted" : "Send Message" }}
       </button>
     </div>
