@@ -1,0 +1,44 @@
+[build]
+  command = "nuxt generate"
+  publish = ".output/public"
+
+[build.environment]
+  NODE_VERSION = "20"
+  NPM_FLAGS = "--version" # disable npm install
+  PNPM_VERSION = "10.16.1" # match your package.json lockfile
+
+[[redirects]]
+  from = "http://*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "https://absolutesport.org/*"
+  to = "https://www.absolutesport.org/:splat"
+  status = 301
+  force = true
+
+# SPA fallback so Nuxt handles routing
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Custom error pages
+[[redirects]]
+  from = "/404"
+  to = "/404.html"
+  status = 404
+
+[[redirects]]
+  from = "/500"
+  to = "/500.html"
+  status = 500
+
+# Future rule for form spam (commented out for now)
+# [[redirects]]
+#   from = "/contact"
+#   to = "/too-many-requests.html"
+#   status = 200
+#   force = true
