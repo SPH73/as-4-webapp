@@ -6,4 +6,7 @@ export default defineNuxtConfig({
   css: ["~/assets/css/main.css"],
 
   modules: ["@nuxtjs/tailwindcss", "@nuxt/eslint"],
+  nitro: {
+    preset: "netlify", // 👈 ensures SSR is packaged for Netlify Functions
+  },
 });
