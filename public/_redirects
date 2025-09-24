@@ -28,4 +28,4 @@ https://absolutesport.org/*    https://www.absolutesport.org/:splat 301!
 # Future Abuse / Spam Mitigation
 # --------------------------------
 # Uncomment when /contact page is live.
-/contact    /too-many-requests.html   200!
+# /contact    /too-many-requests.html   200!
