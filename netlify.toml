@@ -4,6 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  PNPM_VERSION = "10.16.1"
 
 # --------------------------------
 # Redirects & Error Pages
@@ -11,8 +12,9 @@
 
 # Let Nuxt (SSR) handle routes via Nitro serverless functions
 [[redirects]]
+ [[redirects]]
   from = "/*"
-  to = "/.netlify/functions/server"
+  to = "/index.html"
   status = 200
 
 # Custom 404 Page

@@ -12,7 +12,7 @@ https://absolutesport.org/*    https://www.absolutesport.org/:splat 301!
 # Nuxt 4 SSR App Routing
 # --------------------------------
 # Forward all requests to the Nitro serverless function
-/*    /.netlify/functions/server   200
+/*  /index.html  200
 
 # --------------------------------
 # Error Pages

@@ -2,7 +2,8 @@ export default defineAppConfig({
   site: {
     name: "AbsoluteSport",
     url: "https://www.absolutesport.org",
-    maintenance: true,
+    // maintenance: true,
+    title: "AbsoluteSport | School Clubs, Sports Coaching, Camps & Parties",
     description:
       "For first-class sports coaching, camps & parties, our highly qualified & experienced team will tailor fun, engaging programmes & activities to your exact needs.",
     keywords: [
